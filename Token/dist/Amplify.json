@@ -1,0 +1,9 @@
+{
+  "ticker": "AMP",
+  "decimals": 2,
+  "balances": {
+    "dow7mxks0QGGV7zOmHEE1OOi5LyfHpcrDH9n0UPw9eY": 10000000000000000
+  },
+  "stakes": {},
+  "gateways": {}
+}

@@ -1,0 +1,7 @@
+**/*.arweave.creds.json
+**/*.log
+**/*/node_modules
+**/*/arweave
+
+**/*/upload/*
+!**/*/upload/.gitkeep
