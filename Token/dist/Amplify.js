@@ -37,23 +37,21 @@ function Transfer(state, action) {
     return { state }
 }
 
-function Balance(state, action) {
+function Account(state, action) {
     const balances = state.balances;
+    const stakes = state.stakes;
+    const gateways = state.gateways;
+
     const input = action.input;
-    const caller = action.caller;
 
     const target = input.target;
     const ticker = state.ticker;
 
-    if (typeof target !== 'string') {
-        throw new ContractError('Need a target to get a balance for')
-    }
+    const balance = balances[target] ? balances[target] : 0;
+    const stake = stakes[target] ? stakes[target] : 0;
+    const gateway = gateways[target] ? gateways[target] : '';
 
-    if (typeof balances[target] !== 'number') {
-        throw new ContractError('Cannot get balance, target does not exist')
-    }
-
-    return { result: { target, ticker, balance: balances[target] } }
+    return { result: { target, ticker, balance, stake, gateway } }
 }
 
 function Gateway(state, action) {
@@ -89,7 +87,7 @@ function Stake(state, action) {
     }
 
     if (qty <= 0) {
-        throw new ContractError('Invalid token transfer');
+        throw new ContractError('Invalid stake amount');
     }
 
     if (balances[caller] < qty) {
@@ -107,16 +105,49 @@ function Stake(state, action) {
     return { state }
 }
 
+function Withdraw(state, action) {
+    const balances = state.balances;
+    const stakes = state.stakes;
+    const input = action.input;
+    const caller = action.caller;
+
+    const qty = input.qty;
+
+    if (!Number.isInteger(qty)) {
+        throw new ContractError('Invalid value for "qty". Must be an integer');
+    }
+
+    if (qty <= 0) {
+        throw new ContractError('Invalid stake withdrawal amount');
+    }
+
+    if (stakes[caller] < qty) {
+        throw new ContractError('Stake balance is too low to withdraw that amount of tokens');
+    }
+
+    stakes[caller] -= qty;
+    
+    if (balances[caller]) {
+        balances[caller] += qty;
+    } else {
+        balances[caller] = qty;
+    }
+
+    return { state }
+}
+
 function handle(state, action) {
   switch (action.input.function) {
     case 'transfer':
       return Transfer(state, action);
-    case 'balance':
-      return Balance(state, action);
+    case 'account':
+      return Account(state, action);
     case 'gateway':
       return Gateway(state, action);
     case 'stake':
       return Stake(state, action);
+    case 'withdraw':
+      return Withdraw(state, action);
     default:
       throw new ContractError(`Invalid function: "${action.input.function}"`)
   }

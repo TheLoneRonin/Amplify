@@ -3,6 +3,30 @@ import styled from 'styled-components';
 export const WalletInfoContainer = styled.div`
   padding: 30px 15px;
 
+  div.loader-wrap {
+    position: relative;
+
+    div.loader {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+
   p.large {
     padding: 30px 15px;
     font-size: 24px;

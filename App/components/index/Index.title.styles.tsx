@@ -3,6 +3,10 @@ import styled from 'styled-components';
 export const IndexTitleContainer = styled.div`
   padding: 15px;
 
+  a {
+    color: #2a69ac;
+  }
+
   div.title {
     display: flex;
     align-items: center;

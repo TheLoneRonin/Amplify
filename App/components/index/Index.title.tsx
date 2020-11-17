@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { State } from '../../redux/Reducer';
 
-import { Button, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/core';
+import { Button, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody } from '@chakra-ui/react';
 import { IndexTitleContainer } from './Index.title.styles';
 
 import { WalletOnboarding } from '../wallet/Wallet.onboarding';
@@ -14,12 +15,34 @@ import { RewardSchedule } from '../rewards/Reward.schedule';
 
 export interface IndexTitleProps {
     dispatch: Dispatch;
+    disclaimer: boolean;
     onboardingIndex: number;
 }
 
-export const IndexTitleComponent: FC<IndexTitleProps> = ({ dispatch, onboardingIndex }) => {
+export const IndexTitleComponent: FC<IndexTitleProps> = ({ dispatch, disclaimer, onboardingIndex }) => {
     return(
     <IndexTitleContainer>
+        <Modal isOpen={disclaimer} onClose={() => {}} isCentered blockScrollOnMount={false}>
+            <ModalOverlay/>
+            <ModalContent borderRadius="8px">
+                <ModalHeader>Before you continue</ModalHeader>
+                <ModalBody>
+                    <p>
+                        Amplify is designed
+                        specifically to work with an Arweave Gateway. If you don't have one setup
+                        and you'd like to learn how to set one up. Check out our
+                        guide <a style={{ color: '#2a69ac', textDecoration: 'underline', fontWeight: 'bold', cursor: 'pointer' }}>here</a> to 
+                        learn how.    
+                    </p>
+                </ModalBody>
+                <ModalFooter>
+                    <Button colorScheme="blue" onClick={e => dispatch({ type: 'TOGGLE_DISCLAIMER', value: false })}>
+                        Continue
+                    </Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>        
+
         <div className="title">
             <img src="/images/amplify.png" />
             <h1>Amplify</h1>    
@@ -37,10 +60,9 @@ export const IndexTitleComponent: FC<IndexTitleProps> = ({ dispatch, onboardingI
         </div>
         <Tabs
             isFitted
-            variantColor="blue"
-            onChange={index => {
-                dispatch({ type: 'ONBOARDING_INDEX', index });
-            }}    
+            colorScheme="blue"
+            index={onboardingIndex}    
+            onChange={value => dispatch({ type: 'ONBOARDING_INDEX', value })}    
         >
             <TabList>
                 <Tab>Configure Wallet</Tab>
@@ -61,7 +83,7 @@ export const IndexTitleComponent: FC<IndexTitleProps> = ({ dispatch, onboardingI
                 <TabPanel>
                     <RewardSchedule />
                     <Link href="/wallet">
-                        <Button variantColor="blue" size="lg" width="320px" height="90px" fontSize="24px" margin="45px auto 90px auto" display="flex">
+                        <Button colorScheme="blue" size="lg" width="320px" height="90px" fontSize="24px" margin="45px auto 90px auto" display="flex">
                             Finish        
                         </Button>
                     </Link>    
@@ -74,6 +96,7 @@ export const IndexTitleComponent: FC<IndexTitleProps> = ({ dispatch, onboardingI
 
 export const IndexTitle = connect(
     (state: State) => ({
+        disclaimer: state.disclaimer,
         onboardingIndex: state.onboardingIndex,
     })
 )(IndexTitleComponent);

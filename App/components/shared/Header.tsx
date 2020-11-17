@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { State } from '../../redux/Reducer';
 
-import { ButtonGroup, Button } from '@chakra-ui/core';
+import { ButtonGroup, Button } from '@chakra-ui/react';
 import { HeaderContainer } from './Header.styles';
 
 export interface HeaderProps {

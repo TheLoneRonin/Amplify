@@ -1,4 +1,4 @@
-export function Stake(state, action) {
+export function Withdraw(state, action) {
     const balances = state.balances;
     const stakes = state.stakes;
     const input = action.input;
@@ -11,19 +11,19 @@ export function Stake(state, action) {
     }
 
     if (qty <= 0) {
-        throw new ContractError('Invalid stake amount');
+        throw new ContractError('Invalid stake withdrawal amount');
     }
 
-    if (balances[caller] < qty) {
-        throw new ContractError('Balance is too low to stake that amount of tokens');
+    if (stakes[caller] < qty) {
+        throw new ContractError('Stake balance is too low to withdraw that amount of tokens');
     }
 
-    balances[caller] -= qty;
+    stakes[caller] -= qty;
     
-    if (stakes[caller]) {
-        stakes[caller] += qty;
+    if (balances[caller]) {
+        balances[caller] += qty;
     } else {
-        stakes[caller] = qty;
+        balances[caller] = qty;
     }
 
     return { state }
