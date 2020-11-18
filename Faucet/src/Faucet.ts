@@ -2,13 +2,23 @@ import 'colors';
 import Express from 'express';
 import BodyParser from 'body-parser';
 import { program as Command } from 'commander';
-import { UPLOAD } from './Config';
+import { DispenseTokens } from './routes/Faucet.routes';
 
 export const Server = Express();
 export { Command };
 
+Server.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  return next();
+});
+
 Server.use(BodyParser.json());
 Server.use(BodyParser.urlencoded({ extended: true }));
+
+Server.post('/faucet', DispenseTokens);
 
 Command
   .description('Amplify Faucet | The server that issues staking tokens and complimentary faucet tokens')

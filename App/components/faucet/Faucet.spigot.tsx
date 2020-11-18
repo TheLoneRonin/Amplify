@@ -3,23 +3,56 @@ import { FC } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { State } from '../../redux/Reducer';
+import { ClaimTokens } from '../../config/Contract';
 
-import { Modal, ModalOverlay, ModalContent, ModalBody, CircularProgress, Button } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalBody, CircularProgress, Button, useToast } from '@chakra-ui/react';
 import { FaucetSpigotContainer } from './Faucet.spigot.styles';
 
 export interface FaucetSpigotProps {
     dispatch: Dispatch;
     faucetLoader: boolean;
+    address: string;
 }
 
-export const FaucetSpigotComponent: FC<FaucetSpigotProps> = ({ dispatch, faucetLoader }) => {
-    function claimTokens() {
+export const FaucetSpigotComponent: FC<FaucetSpigotProps> = ({ dispatch, faucetLoader, address }) => {
+    const toast = useToast();
+
+    async function claimTokens() {
         dispatch({ type: 'TOGGLE_FAUCET_LOADER', value: true });
+
+        try {
+            if (!address) {
+                throw Error('Invalid address');
+            }
+
+            await ClaimTokens(address);
+
+            toast({
+                title: "Claimed tokens!",
+                description: `We've deposited 100 AMP tokens into your account.`,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
+
+            dispatch({ type: 'ONBOARDING_INDEX', value: 2 });
+        } catch (error) {
+            toast({
+                title: "Claim token error",
+                description: error.response.body ? error.result.body.result : `Error claiming tokens`,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
+        }
+        
         
         setTimeout(() => {
-            dispatch({ type: 'TOGGLE_FAUCET_LOADER', value: false });
-            dispatch({ type: 'ONBOARDING_INDEX', value: 2 });
+            
+            
         }, 2500);
+
+        dispatch({ type: 'TOGGLE_FAUCET_LOADER', value: false });
     }
 
     return(
@@ -46,5 +79,6 @@ export const FaucetSpigotComponent: FC<FaucetSpigotProps> = ({ dispatch, faucetL
 export const FaucetSpigot = connect(
     (state: State) => ({
         faucetLoader: state.faucetLoader,
+        address: state.address,
     })
 )(FaucetSpigotComponent);

@@ -24,3 +24,5 @@ export const ArData = ArweaveData({
   crypto: Arweave.crypto,
   deepHash,
 });
+
+export const ContractAddress = 'TUY1f1xSc5tzCEKhKsVylMB8ly2nOGDSGgEl9rR-m78';

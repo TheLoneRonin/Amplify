@@ -21,8 +21,8 @@ export async function ClaimTokens(address: string) {
 export async function GetBalance(address: string, wallet) {
   const state = await interactRead(arweave, wallet, ContractAddress, { function: 'account', target: address });
   const arBalance = await arweave.wallets.getBalance(address);
-  const balance = state.balance / Math.pow(10, 8);
-  const stake = state.stake / Math.pow(10, 8);
+  const balance = state.balance;
+  const stake = state.stake;
   const gateway = state.gateway ? state.gateway : 'N/A';
 
   return { balance, stake, gateway, arBalance: arweave.ar.winstonToAr(arBalance) };
