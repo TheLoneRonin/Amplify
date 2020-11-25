@@ -34,9 +34,9 @@ export const HeaderComponent: FC<HeaderProps> = ({ dispatch, page }) => {
                 Stake
               </a>
             </Link>
-            <Link href="/rewards">
-              <a className={`link ${page === 'rewards' ? 'active' : ''}`}>
-                Rewards
+            <Link href="/about">
+              <a className={`link ${page === 'about' ? 'active' : ''}`}>
+                About
               </a>
             </Link>
           </div>

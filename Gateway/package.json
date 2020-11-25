@@ -1,5 +1,5 @@
 {
-  "name": "@amplify/faucet",
+  "name": "@amplify/gateway",
   "version": "0.0.1",
   "main": "dist/src/Faucet.js",
   "license": "MIT",

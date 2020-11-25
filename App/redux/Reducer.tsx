@@ -18,6 +18,7 @@ export interface State {
     gatewayStatus: number;
     stakeLoader: boolean;
     stakeStatus: number;
+    slideIndex: number;
 
     wallet: {
         loading: boolean;
@@ -61,6 +62,7 @@ export const InitialState: State = {
     gatewayStatus: 0,
     stakeLoader: false,
     stakeStatus: 0,
+    slideIndex: 0,
 
     wallet: {
         loading: false,

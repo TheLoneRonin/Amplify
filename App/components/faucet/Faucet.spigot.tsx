@@ -45,12 +45,6 @@ export const FaucetSpigotComponent: FC<FaucetSpigotProps> = ({ dispatch, faucetL
                 isClosable: true,
             });
         }
-        
-        
-        setTimeout(() => {
-            
-            
-        }, 2500);
 
         dispatch({ type: 'TOGGLE_FAUCET_LOADER', value: false });
     }

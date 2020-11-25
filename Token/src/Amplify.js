@@ -3,6 +3,7 @@ import { Account } from './Account';
 import { Gateway } from './Gateway';
 import { Stake } from './Stake';
 import { Withdraw } from './Withdraw';
+import { Vote } from './Vote';
 
 export function handle(state, action) {
   switch (action.input.function) {
@@ -16,6 +17,8 @@ export function handle(state, action) {
       return Stake(state, action);
     case 'withdraw':
       return Withdraw(state, action);
+    case 'vote':
+      return Vote(state, action);
     default:
       throw new ContractError(`Invalid function: "${action.input.function}"`)
   }

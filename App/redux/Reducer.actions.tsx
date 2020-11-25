@@ -10,6 +10,11 @@ export function ReducerActions(State: State, Action: AnyAction): State {
           State,
           { jwk: { $set: Action.jwk } },
       );
+    case 'UPDATE_SLIDE_INDEX':
+      return State = update(
+        State,
+        { slideIndex: { $set: Action.value } },
+      );
     case 'UPDATE_ADDRESS':
       return State = update(
           State,
